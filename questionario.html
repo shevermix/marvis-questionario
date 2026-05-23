@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questionario — Marvis S.r.l.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        marvis: { primary: '#00376a', secondary: '#002a52', warm: '#f0ede4', light: '#fffeff' }
+      },
+      fontFamily: { sans: ['Inter', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  input[type=range] { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px; background: #e5e7eb; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #00376a; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+  input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #00376a; cursor: pointer; border: none; }
+  .choice-card input[type=radio], .choice-card input[type=checkbox] { display: none; }
+  .choice-card label { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; cursor: pointer; transition: all 0.15s; font-size: 0.95rem; }
+  .choice-card label:hover { border-color: #00376a; background: #f0ede4; }
+  .choice-card input:checked + label { border-color: #00376a; background: #e4dfd3; color: #00376a; font-weight: 600; }
+  .choice-card input:checked + label .dot { background: #00376a; border-color: #00376a; }
+  .dot { width: 16px; height: 16px; border: 2px solid #d1d5db; border-radius: 50%; flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
+  .dot::after { content: ''; width: 6px; height: 6px; background: white; border-radius: 50%; }
+  .box { width: 16px; height: 16px; border: 2px solid #d1d5db; border-radius: 4px; flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; }
+  .choice-card input[type=checkbox]:checked + label .box { background: #00376a; border-color: #00376a; }
+  .choice-card input[type=checkbox]:checked + label .box::after { content: '✓'; }
+  .drag-item { padding: 10px 14px; background: #fffeff; border: 2px solid #e5e7eb; border-radius: 8px; cursor: grab; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; transition: box-shadow 0.15s; }
+  .drag-item:hover { box-shadow: 0 4px 12px rgba(0,55,106,0.15); border-color: #00376a; }
+  .drag-item.dragging { opacity: 0.5; cursor: grabbing; }
+  .rank-num { width: 24px; height: 24px; background: #00376a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  @media print {
+    .no-print { display: none !important; }
+    .section { display: block !important; }
+    #summary { display: block !important; }
+  }
+</style>
+</head>
+<body class="bg-[#f0ede4] min-h-screen">
+
+<!-- Header -->
+<header class="bg-marvis-primary text-white py-6 px-4 no-print">
+  <div class="max-w-3xl mx-auto flex items-center gap-4">
+    <div class="w-10 h-10 bg-marvis-primary rounded-full flex items-center justify-center text-white font-bold text-lg">M</div>
+    <div>
+      <h1 class="text-xl font-bold">Questionario Nuovo Sito</h1>
+      <p class="text-gray-400 text-sm">Marvis S.r.l. — raccolta informazioni per lo sviluppo</p>
+    </div>
+  </div>
+</header>
+
+<!-- Progress -->
+<div class="bg-[#fffeff] border-b border-gray-200 sticky top-0 z-10 no-print">
+  <div class="max-w-3xl mx-auto px-4 py-3">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-sm font-medium text-gray-600" id="progressLabel">Sezione 1 di 9</span>
+      <span class="text-sm text-gray-400" id="progressPct">11%</span>
+    </div>
+    <div class="w-full bg-gray-200 rounded-full h-2">
+      <div id="progressBar" class="bg-marvis-primary h-2 rounded-full transition-all duration-300" style="width:11%"></div>
+    </div>
+    <div class="flex justify-between mt-2 text-xs text-gray-400">
+      <span>Brand</span><span>Target</span><span>Catalogo</span><span>Vendite</span><span>Prezzi</span><span>Legale</span><span>Tecnico</span><span>Futuro</span><span>Priorità</span>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-3xl mx-auto px-4 py-8">
+
+<!-- ============ SEZIONE 1 ============ -->
+<div class="section active fade-in" id="s1">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
+      <h2 class="text-xl font-semibold text-gray-800">Brand e Design</h2>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Q1 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">1. Avete un manuale d'identità visiva o brand guidelines?</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q1" id="q1a" value="Sì"><label for="q1a"><span class="dot"></span>Sì, abbiamo un brandbook</label></div>
+          <div><input type="radio" name="q1" id="q1b" value="No"><label for="q1b"><span class="dot"></span>No, non ce l'abbiamo</label></div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">2. Schema colori del sito</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q2" id="q2a" value="Mantieni schema attuale (blu/beige/bianco)"><label for="q2a"><span class="dot"></span>Mantieni lo schema attuale <span class="ml-2 flex gap-1 items-center"><span class="inline-block w-4 h-4 rounded-full bg-[#00376a]"></span><span class="inline-block w-4 h-4 rounded-full bg-[#f0ede4] border border-gray-300"></span><span class="inline-block w-4 h-4 rounded-full bg-[#fffeff] border border-gray-300"></span></span></label></div>
+          <div><input type="radio" name="q2" id="q2b" value="Nuova palette colori"><label for="q2b"><span class="dot"></span>Aperto a una nuova palette</label></div>
+          <div><input type="radio" name="q2" id="q2c" value="Nessuna preferenza"><label for="q2c"><span class="dot"></span>Nessuna preferenza, decidete voi</label></div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">3. Siti web di riferimento che vi piacciono visivamente</label>
+        <p class="text-sm text-gray-500 mb-3">Qualsiasi settore va bene — ci servono per capire il vostro gusto estetico.</p>
+        <div class="space-y-2">
+          <input type="url" name="q4_1" placeholder="https://esempio1.com" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary focus:ring-1 focus:ring-marvis-primary">
+          <input type="url" name="q4_2" placeholder="https://esempio2.com" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary focus:ring-1 focus:ring-marvis-primary">
+          <input type="url" name="q4_3" placeholder="https://esempio3.com" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary focus:ring-1 focus:ring-marvis-primary">
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">4. Materiale fotografico disponibile</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="checkbox" name="q5" id="q5a" value="Foto professionali disponibili"><label for="q5a"><span class="box"></span>Ho già foto professionali (magazzino, ufficio, team, prodotti)</label></div>
+          <div><input type="checkbox" name="q5" id="q5b" value="Servizio fotografico pianificato"><label for="q5b"><span class="box"></span>Pianificheremo un servizio fotografico</label></div>
+          <div><input type="checkbox" name="q5" id="q5c" value="Foto stock"><label for="q5c"><span class="box"></span>Usiamo foto stock</label></div>
+          <div><input type="checkbox" name="q5" id="q5d" value="Generazione immagini AI"><label for="q5d"><span class="box"></span>Generazione con intelligenza artificiale <span class="text-xs text-gray-400 ml-1">(rapido, gratuito, risultato professionale)</span></label></div>
+        </div>
+      </div>
+
+      <!-- Q5 — Obiettivi del sito -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">5. Quali problemi deve risolvere il nuovo sito?</label>
+        <p class="text-sm text-gray-500 mb-3">Selezionate tutti gli obiettivi principali.</p>
+        <div class="space-y-2 choice-card">
+          <div><input type="checkbox" name="q_goals" id="g1" value="Presentare l'azienda e i prodotti ai nuovi clienti"><label for="g1"><span class="box"></span>Presentare l'azienda e il catalogo ai nuovi clienti</label></div>
+          <div><input type="checkbox" name="q_goals" id="g2" value="Generare richieste di preventivo e contatti"><label for="g2"><span class="box"></span>Generare richieste di preventivo e nuovi contatti</label></div>
+          <div><input type="checkbox" name="q_goals" id="g3" value="Ridurre le chiamate ripetitive su disponibilità e prezzi"><label for="g3"><span class="box"></span>Ridurre le chiamate ripetitive su disponibilità e prezzi</label></div>
+          <div><input type="checkbox" name="q_goals" id="g4" value="Rafforzare la credibilità e professionalità del brand"><label for="g4"><span class="box"></span>Rafforzare la credibilità e professionalità del brand</label></div>
+          <div><input type="checkbox" name="q_goals" id="g5" value="Posizionarsi su Google per clienti B2B della zona"><label for="g5"><span class="box"></span>Posizionarsi su Google per clienti B2B della zona</label></div>
+          <div><input type="checkbox" name="q_goals" id="g6" value="Permettere il download di listini e schede tecniche"><label for="g6"><span class="box"></span>Permettere il download di listini e schede tecniche</label></div>
+        </div>
+        <div class="mt-2">
+          <input type="text" name="goals_extra" placeholder="Altro obiettivo..." class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary focus:ring-1 focus:ring-marvis-primary">
+        </div>
+      </div>
+
+      <!-- Q6 — Struttura -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">6. Struttura del sito</label>
+        <p class="text-sm text-gray-500 mb-3">Quanto deve essere articolato il sito?</p>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q_structure" id="st1" value="One-page — tutto su una pagina, scorrevole"><label for="st1"><span class="dot"></span><div><span class="font-medium">One-page</span> — tutto su una pagina scorrevole <span class="text-xs text-gray-400">(semplice, veloce da realizzare)</span></div></label></div>
+          <div><input type="radio" name="q_structure" id="st2" value="Multipage — home + pagine separate per prodotti, chi siamo, contatti"><label for="st2"><span class="dot"></span><div><span class="font-medium">Multipagina</span> — home + pagine separate per prodotti, chi siamo, contatti <span class="text-xs text-gray-400">(più strutturato, migliore per SEO)</span></div></label></div>
+          <div><input type="radio" name="q_structure" id="st3" value="Multipage con catalogo prodotti navigabile"><label for="st3"><span class="dot"></span><div><span class="font-medium">Multipagina + catalogo</span> — con schede prodotto navigabili per categoria/brand <span class="text-xs text-gray-400">(consigliato per il vostro business)</span></div></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEZIONE 2 ============ -->
+<div class="section" id="s2">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">2</div>
+      <h2 class="text-xl font-semibold text-gray-800">Pubblico Target</h2>
+    </div>
+    <div class="space-y-6">
+
+      <!-- Q7 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">7. Mercato geografico</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q7" id="q7a" value="Solo Italia"><label for="q7a"><span class="dot"></span>Solo Italia</label></div>
+          <div><input type="radio" name="q7" id="q7b" value="Italia + Europa"><label for="q7b"><span class="dot"></span>Italia + Europa</label></div>
+          <div><input type="radio" name="q7" id="q7c" value="Internazionale"><label for="q7c"><span class="dot"></span>Internazionale</label></div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">8. Sito multilingua</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q8" id="q8a" value="Solo italiano"><label for="q8a"><span class="dot"></span>Solo italiano</label></div>
+          <div><input type="radio" name="q8" id="q8b" value="Italiano + Inglese"><label for="q8b"><span class="dot"></span>Italiano + Inglese</label></div>
+          <div><input type="radio" name="q8" id="q8c" value="Da decidere"><label for="q8c"><span class="dot"></span>Da decidere</label></div>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">9. I vostri clienti conoscono il codice articolo di cui hanno bisogno?</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q9" id="q9a" value="Sempre — conoscono il codice esatto"><label for="q9a"><span class="dot"></span>Sempre — conoscono il codice esatto</label></div>
+          <div><input type="radio" name="q9" id="q9b" value="A volte — mix di esperti e non"><label for="q9b"><span class="dot"></span>A volte — mix di esperti e non</label></div>
+          <div><input type="radio" name="q9" id="q9c" value="Raramente — serve aiuto nella scelta per marca/modello auto"><label for="q9c"><span class="dot"></span>Raramente — spesso serve aiuto nella selezione</label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEZIONE 3 ============ -->
+<div class="section" id="s3">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">3</div>
+      <h2 class="text-xl font-semibold text-gray-800">Catalogo e Nomenclatura</h2>
+      <span class="text-xs bg-[#00376a] text-white px-2 py-1 rounded-full font-medium">Fondamentale per il database</span>
+    </div>
+    <div class="space-y-6">
+
+      <!-- Q10 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">10. Struttura categorie del catalogo</label>
+        <p class="text-sm text-gray-500 mb-4">Abbiamo estratto la struttura dal sito. Selezionate le categorie attive e deselezionate quelle non pertinenti.</p>
+
+        <div class="space-y-4">
+          <div class="bg-[#f0ede4] rounded-xl p-4">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">🔋 Batterie</p>
+            <div class="space-y-2 choice-card">
+              <div><input type="checkbox" name="cat" id="c1" value="Avviamento Standard" checked><label for="c1"><span class="box"></span>Avviamento Standard</label></div>
+              <div><input type="checkbox" name="cat" id="c2" value="Avviamento EFB" checked><label for="c2"><span class="box"></span>Avviamento EFB</label></div>
+              <div><input type="checkbox" name="cat" id="c3" value="Avviamento AGM" checked><label for="c3"><span class="box"></span>Avviamento AGM</label></div>
+              <div><input type="checkbox" name="cat" id="c4" value="Batterie Pesanti"><label for="c4"><span class="box"></span>Pesanti (veicoli commerciali)</label></div>
+              <div><input type="checkbox" name="cat" id="c5" value="Batterie Cicliche"><label for="c5"><span class="box"></span>Cicliche</label></div>
+              <div><input type="checkbox" name="cat" id="c6" value="Trazione leggera"><label for="c6"><span class="box"></span>Trazione leggera</label></div>
+              <div><input type="checkbox" name="cat" id="c7" value="Trazione"><label for="c7"><span class="box"></span>Trazione</label></div>
+            </div>
+          </div>
+          <div class="bg-[#f0ede4] rounded-xl p-4">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">💡 Lampadine</p>
+            <div class="space-y-2 choice-card">
+              <div><input type="checkbox" name="cat" id="c8" value="OSRAM LEDriving" checked><label for="c8"><span class="box"></span>OSRAM LEDriving</label></div>
+              <div><input type="checkbox" name="cat" id="c9" value="OSRAM Proiettori (alogene/xenon)" checked><label for="c9"><span class="box"></span>OSRAM Proiettori (alogene / xenon)</label></div>
+              <div><input type="checkbox" name="cat" id="c10" value="Xeno Automotive"><label for="c10"><span class="box"></span>Xeno Automotive</label></div>
+              <div><input type="checkbox" name="cat" id="c11" value="Applicazioni speciali"><label for="c11"><span class="box"></span>Applicazioni speciali</label></div>
+            </div>
+          </div>
+          <div class="bg-[#f0ede4] rounded-xl p-4">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">🔧 Accessori</p>
+            <div class="space-y-2 choice-card">
+              <div><input type="checkbox" name="cat" id="c12" value="Avviatori"><label for="c12"><span class="box"></span>Avviatori</label></div>
+              <div><input type="checkbox" name="cat" id="c13" value="Caricabatterie"><label for="c13"><span class="box"></span>Caricabatterie</label></div>
+            </div>
+          </div>
+          <div class="bg-[#f0ede4] rounded-xl p-4">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">🧴 Prodotti di consumo</p>
+            <div class="space-y-2 choice-card">
+              <div><input type="checkbox" name="cat" id="c14" value="Antigelo"><label for="c14"><span class="box"></span>Antigelo</label></div>
+              <div><input type="checkbox" name="cat" id="c15" value="AdBlue"><label for="c15"><span class="box"></span>AdBlue</label></div>
+              <div><input type="checkbox" name="cat" id="c16" value="Bobine"><label for="c16"><span class="box"></span>Bobine</label></div>
+              <div><input type="checkbox" name="cat" id="c17" value="Liquido freni"><label for="c17"><span class="box"></span>Liquido freni</label></div>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-2">Categorie aggiuntive non presenti sopra:</label>
+            <textarea name="q10extra" rows="2" placeholder="Es: Alternatori, Motorini d'avviamento, Cavi batteria..." class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary focus:ring-1 focus:ring-marvis-primary resize-none"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q11 brands -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">11. Brand attivi nel vostro catalogo</label>
+        <div class="grid grid-cols-2 gap-2 choice-card">
+          <div><input type="checkbox" name="brand" id="b1" value="VARTA" checked><label for="b1"><span class="box"></span>VARTA</label></div>
+          <div><input type="checkbox" name="brand" id="b2" value="EXIDE" checked><label for="b2"><span class="box"></span>EXIDE</label></div>
+          <div><input type="checkbox" name="brand" id="b3" value="MIDAC" checked><label for="b3"><span class="box"></span>MIDAC</label></div>
+          <div><input type="checkbox" name="brand" id="b4" value="TUXON" checked><label for="b4"><span class="box"></span>TUXON</label></div>
+          <div><input type="checkbox" name="brand" id="b5" value="LUXOR" checked><label for="b5"><span class="box"></span>LUXOR</label></div>
+          <div><input type="checkbox" name="brand" id="b6" value="OSRAM" checked><label for="b6"><span class="box"></span>OSRAM</label></div>
+          <div><input type="checkbox" name="brand" id="b7" value="NEOLUX" checked><label for="b7"><span class="box"></span>NEOLUX</label></div>
+          <div><input type="checkbox" name="brand" id="b8" value="PHILIPS" checked><label for="b8"><span class="box"></span>PHILIPS</label></div>
+          <div><input type="checkbox" name="brand" id="b9" value="USHIO" checked><label for="b9"><span class="box"></span>USHIO</label></div>
+          <div><input type="checkbox" name="brand" id="b10" value="YUASA" checked><label for="b10"><span class="box"></span>YUASA</label></div>
+        </div>
+        <input type="text" name="brandExtra" placeholder="Altri brand: es. BOSCH, BANNER..." class="mt-2 w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+      </div>
+
+      <!-- Q12 SKU slider -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">12. Numero indicativo di articoli (SKU) da pubblicare sul sito</label>
+        <div class="bg-[#f0ede4] rounded-xl p-5">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-sm text-gray-500">Pochi articoli</span>
+            <span class="text-2xl font-bold text-marvis-primary" id="skuVal">500</span>
+            <span class="text-sm text-gray-500">Catalogo completo</span>
+          </div>
+          <input type="range" min="0" max="5000" value="500" step="50" oninput="document.getElementById('skuVal').textContent=this.value==5000?'5000+':this.value; answers.sku=this.value">
+          <div class="flex justify-between text-xs text-gray-400 mt-1"><span>0</span><span>1000</span><span>2000</span><span>3000</span><span>4000</span><span>5000+</span></div>
+        </div>
+      </div>
+
+      <!-- Q13 rank -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">13. Parametri di ricerca — ordinate per importanza (trascinate)</label>
+        <p class="text-sm text-gray-500 mb-3">Il primo = filtro più importante per i vostri clienti</p>
+        <ul id="rankList" class="space-y-2">
+          <li class="drag-item" draggable="true" data-val="Marca"><span class="rank-num">1</span>🏷️ Marca</li>
+          <li class="drag-item" draggable="true" data-val="Corrente spunto CCA/EN"><span class="rank-num">2</span>⚡ Corrente di spunto (CCA/EN)</li>
+          <li class="drag-item" draggable="true" data-val="Capacità Ah"><span class="rank-num">3</span>🔋 Capacità (Ah)</li>
+          <li class="drag-item" draggable="true" data-val="Dimensioni"><span class="rank-num">4</span>📐 Dimensioni</li>
+          <li class="drag-item" draggable="true" data-val="Polarità"><span class="rank-num">5</span>🔄 Polarità</li>
+        </ul>
+      </div>
+
+      <!-- Q14 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">14. In che formato sono attualmente le informazioni sui prodotti?</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q14" id="q14a" value="Ho un file Excel/CSV strutturato con tutte le caratteristiche"><label for="q14a"><span class="dot"></span>Ho un file Excel/CSV strutturato con tutte le caratteristiche</label></div>
+          <div><input type="radio" name="q14" id="q14b" value="Ho cataloghi PDF dei fornitori"><label for="q14b"><span class="dot"></span>Ho cataloghi PDF dei fornitori</label></div>
+          <div><input type="radio" name="q14" id="q14c" value="Devo raccogliere i dati manualmente"><label for="q14c"><span class="dot"></span>Devo raccogliere i dati manualmente</label></div>
+          <div><input type="radio" name="q14" id="q14d" value="Altro"><label for="q14d"><span class="dot"></span>Altro</label></div>
+        </div>
+      </div>
+
+      <!-- Q15 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">15. Frequenza di aggiornamento prezzi e disponibilità</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q15" id="q15a" value="Giornaliera"><label for="q15a"><span class="dot"></span>Giornaliera</label></div>
+          <div><input type="radio" name="q15" id="q15b" value="Settimanale"><label for="q15b"><span class="dot"></span>Settimanale</label></div>
+          <div><input type="radio" name="q15" id="q15c" value="Mensile"><label for="q15c"><span class="dot"></span>Mensile</label></div>
+          <div><input type="radio" name="q15" id="q15d" value="Raramente / stagionale"><label for="q15d"><span class="dot"></span>Raramente / stagionale</label></div>
+        </div>
+      </div>
+
+      <!-- Q16 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">16. Avete cataloghi PDF o schede tecniche da rendere scaricabili?</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q16" id="q16a" value="Sì, li allego"><label for="q16a"><span class="dot"></span>Sì, li allego</label></div>
+          <div><input type="radio" name="q16" id="q16b" value="Sì, li invio separatamente"><label for="q16b"><span class="dot"></span>Sì, li invio separatamente</label></div>
+          <div><input type="radio" name="q16" id="q16c" value="No, non abbiamo materiale scaricabile"><label for="q16c"><span class="dot"></span>No, non abbiamo materiale scaricabile</label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEZIONE 4 ============ -->
+<div class="section" id="s4">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">4</div>
+      <h2 class="text-xl font-semibold text-gray-800">Processo di Vendita</h2>
+    </div>
+    <p class="text-sm text-gray-500 mb-6 ml-11">Capiamo come funziona oggi il vostro processo — per costruire il modulo richieste più efficace.</p>
+    <div class="space-y-6">
+
+      <!-- Q17 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">17. Come arrivano oggi gli ordini/richieste?</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="checkbox" name="q17" id="q17a" value="Telefono"><label for="q17a"><span class="box"></span>📞 Telefono</label></div>
+          <div><input type="checkbox" name="q17" id="q17b" value="WhatsApp"><label for="q17b"><span class="box"></span>💬 WhatsApp</label></div>
+          <div><input type="checkbox" name="q17" id="q17c" value="Email"><label for="q17c"><span class="box"></span>📧 Email</label></div>
+          <div><input type="checkbox" name="q17" id="q17d" value="Di persona / showroom"><label for="q17d"><span class="box"></span>🏬 Di persona / showroom</label></div>
+          <div><input type="checkbox" name="q17" id="q17e" value="Agente sul territorio"><label for="q17e"><span class="box"></span>🚗 Agente sul territorio</label></div>
+        </div>
+      </div>
+
+      <!-- Q18 slider -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">18. Ore al giorno che i vostri manager dedicano a rispondere su disponibilità e prezzi</label>
+        <div class="bg-[#f0ede4] rounded-xl p-5">
+          <div class="text-center mb-3">
+            <span class="text-3xl font-bold text-marvis-primary" id="hoursVal">2</span>
+            <span class="text-gray-500 ml-1">ore/giorno</span>
+          </div>
+          <input type="range" min="0" max="8" value="2" step="0.5" oninput="document.getElementById('hoursVal').textContent=this.value; answers.hoursRoutine=this.value">
+          <div class="flex justify-between text-xs text-gray-400 mt-1"><span>0h</span><span>2h</span><span>4h</span><span>6h</span><span>8h+</span></div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2">Questo ci aiuta a dimensionare l'automazione giusta per il vostro sito.</p>
+      </div>
+
+      <!-- Q19 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">19. Email per la ricezione delle richieste dal sito</label>
+        <div class="flex gap-2 items-center mb-2">
+          <input type="email" name="q19" placeholder="info@marvis.it" value="info@marvis.it" class="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary focus:ring-1 focus:ring-marvis-primary">
+        </div>
+        <p class="text-xs text-gray-400">Abbiamo trovato info@marvis.it sul sito attuale. Confermate o modificate.</p>
+      </div>
+
+      <!-- Q20 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">20. Notifiche per le nuove richieste</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="checkbox" name="q20" id="q20a" value="Email (automatica)"><label for="q20a"><span class="box"></span>📧 Email (automatica)</label></div>
+          <div><input type="checkbox" name="q20" id="q20b" value="SMS"><label for="q20b"><span class="box"></span>📱 SMS</label></div>
+          <div><input type="checkbox" name="q20" id="q20c" value="WhatsApp"><label for="q20c"><span class="box"></span>💬 WhatsApp</label></div>
+          <div><input type="checkbox" name="q20" id="q20d" value="Non necessario"><label for="q20d"><span class="box"></span>Non necessario</label></div>
+        </div>
+      </div>
+
+      <!-- Q21 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">21. Voci dell'oggetto nel modulo di contatto</label>
+        <p class="text-sm text-gray-500 mb-3">Attualmente il sito ha 3 voci. Selezionate quelle da mantenere e aggiungete nuove se necessario.</p>
+        <div class="space-y-2 choice-card">
+          <div><input type="checkbox" name="q21" id="q21a" value="Richiesta telefonata" checked><label for="q21a"><span class="box"></span>Richiesta telefonata</label></div>
+          <div><input type="checkbox" name="q21" id="q21b" value="Richiesta visita agente" checked><label for="q21b"><span class="box"></span>Richiesta visita agente</label></div>
+          <div><input type="checkbox" name="q21" id="q21c" value="Richiesta listini prezzi" checked><label for="q21c"><span class="box"></span>Richiesta listini prezzi</label></div>
+          <div><input type="checkbox" name="q21" id="q21d" value="Richiesta preventivo"><label for="q21d"><span class="box"></span>Richiesta preventivo</label></div>
+        </div>
+        <input type="text" name="q21extra" placeholder="Altra voce da aggiungere..." class="mt-2 w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+      </div>
+
+      <!-- Q22 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">22. Avete un CRM aziendale?</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q22" id="q22a" value="No" onchange="toggleCRM()"><label for="q22a"><span class="dot"></span>No</label></div>
+          <div><input type="radio" name="q22" id="q22b" value="Sì" onchange="toggleCRM()"><label for="q22b"><span class="dot"></span>Sì</label></div>
+        </div>
+        <div id="crmField" class="hidden mt-3">
+          <input type="text" name="crmName" placeholder="Quale sistema? Es: HubSpot, Salesforce, Zoho..." class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEZIONE 5 ============ -->
+<div class="section" id="s5">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">5</div>
+      <h2 class="text-xl font-semibold text-gray-800">Prezzi</h2>
+    </div>
+    <div class="space-y-6">
+
+      <!-- Q23 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">23. Visualizzazione prezzi sul sito</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q23" id="q23a" value="Prezzi pubblici visibili a tutti"><label for="q23a"><span class="dot"></span>Prezzi pubblici — visibili a tutti</label></div>
+          <div><input type="radio" name="q23" id="q23b" value="Solo su richiesta (form Richiesta Preventivo)"><label for="q23b"><span class="dot"></span>Solo su richiesta — form "Richiesta Preventivo"</label></div>
+          <div><input type="radio" name="q23" id="q23c" value="Prezzi indicativi + contattaci per offerta"><label for="q23c"><span class="dot"></span>Prezzi indicativi + "contattaci per un'offerta"</label></div>
+        </div>
+      </div>
+
+      <!-- Q24 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">24. Struttura del listino prezzi</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q24" id="q24a" value="Listino unico per tutti i clienti"><label for="q24a"><span class="dot"></span>Listino unico per tutti i clienti</label></div>
+          <div><input type="radio" name="q24" id="q24b" value="Prezzi personalizzati per cliente e volume d'acquisto"><label for="q24b"><span class="dot"></span>Prezzi personalizzati per cliente e volume d'acquisto</label></div>
+        </div>
+      </div>
+
+      <!-- Q25 -->
+      <div class="bg-[#f0ede4] rounded-xl p-5 border border-[#00376a]/20">
+        <label class="block text-sm font-semibold text-gray-800 mb-1">25. Portale B2B con area riservata (prospettiva futura)</label>
+        <p class="text-sm text-gray-600 mb-4">I vostri clienti fissi potrebbero avere un'area personale dove vedono i propri sconti, le disponibilità di magazzino e fanno ordini senza chiamare.</p>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q25" id="q25a" value="Sì, molto interessante"><label for="q25a"><span class="dot"></span>Sì, molto interessante</label></div>
+          <div><input type="radio" name="q25" id="q25b" value="Forse in futuro"><label for="q25b"><span class="dot"></span>Forse in futuro</label></div>
+          <div><input type="radio" name="q25" id="q25c" value="Non necessario"><label for="q25c"><span class="dot"></span>Non necessario</label></div>
+        </div>
+        <p class="text-xs text-gray-500 mt-3">💡 Adesso realizziamo il sito-vetrina per generare richieste. Il portale B2B sarebbe il secondo step.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEZIONE 6 ============ -->
+<div class="section" id="s6">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">6</div>
+      <h2 class="text-xl font-semibold text-gray-800">Legale e GDPR</h2>
+    </div>
+    <p class="text-sm text-gray-500 mb-6 ml-11">Obbligatorio per legge — senza questi dati non è possibile pubblicare il sito in Italia.</p>
+    <div class="space-y-6">
+
+      <!-- Q26 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">26. Dati aziendali</label>
+        <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
+          <p class="text-xs font-semibold text-green-700 mb-2">✅ Già estratti dal sito attuale — confermate che sono corretti:</p>
+          <div class="space-y-1 choice-card">
+            <div><input type="checkbox" name="confirm_data" id="cd1" value="MARVIS S.r.l. — Ragione Sociale confermata" checked><label for="cd1"><span class="box"></span>MARVIS S.r.l.</label></div>
+            <div><input type="checkbox" name="confirm_data" id="cd2" value="Via T.A. Edison 637, Milano — Sede Legale confermata" checked><label for="cd2"><span class="box"></span>Via T.A. Edison 637, Milano</label></div>
+            <div><input type="checkbox" name="confirm_data" id="cd3" value="P.IVA 04642620159 confermata" checked><label for="cd3"><span class="box"></span>P.IVA 04642620159</label></div>
+            <div><input type="checkbox" name="confirm_data" id="cd4" value="REA 1028114 confermato" checked><label for="cd4"><span class="box"></span>REA 1028114</label></div>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1">Codice Fiscale <span class="text-marvis-primary">*</span></label>
+            <input type="text" name="cf" placeholder="Es: 04642620159" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1">PEC (Posta Elettronica Certificata) <span class="text-marvis-primary">*</span></label>
+            <input type="email" name="pec" placeholder="marvis@pec.it" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1">Codice SDI <span class="text-marvis-primary">*</span></label>
+            <input type="text" name="sdi" placeholder="Es: XXXXXXX (7 caratteri)" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1">Correzioni ai dati estratti (se necessario)</label>
+            <textarea name="dataCorrections" rows="2" placeholder="Indicate qui eventuali correzioni..." class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary resize-none"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q27 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">27. Privacy Policy e Cookie Policy</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q27" id="q27a" value="Ho già una Privacy Policy redatta da un avvocato"><label for="q27a"><span class="dot"></span>Ho già una Privacy Policy redatta da un avvocato</label></div>
+          <div><input type="radio" name="q27" id="q27b" value="Non ce l'ho — includi Iubenda nel preventivo (~€27/anno)"><label for="q27b"><span class="dot"></span>Non ce l'ho → includi <strong>Iubenda</strong> nel preventivo <span class="text-gray-400 text-xs">(~€27/anno, conforme GDPR)</span></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEZIONE 7 ============ -->
+<div class="section" id="s7">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">7</div>
+      <h2 class="text-xl font-semibold text-gray-800">Dettagli Tecnici</h2>
+    </div>
+    <div class="space-y-6">
+
+      <!-- Q28 -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">28. Accesso al pannello DNS del dominio marvis.it</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q28" id="q28a" value="Sì, ho le credenziali del registrar"><label for="q28a"><span class="dot"></span>Sì, ho le credenziali del registrar</label></div>
+          <div><input type="radio" name="q28" id="q28b" value="No, devo richiederle"><label for="q28b"><span class="dot"></span>No, devo richiederle</label></div>
+          <div><input type="radio" name="q28" id="q28c" value="Non so dove è registrato il dominio"><label for="q28c"><span class="dot"></span>Non so dove è registrato il dominio</label></div>
+        </div>
+      </div>
+
+      <!-- Q29 hosting -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">29. Hosting attuale del sito WordPress</label>
+        <input type="text" name="q29" placeholder="Es: Aruba, SiteGround, OVH, non so..." class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+      </div>
+
+      <!-- Q30 social -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">30. Profili social aziendali</label>
+        <p class="text-sm text-gray-500 mb-3">Sul sito attuale le icone social puntano alle homepage generali. Indicate i vostri profili reali, oppure li rimuoviamo.</p>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">📸</span>
+            <input type="url" name="instagram" placeholder="https://www.instagram.com/marvis_srl/" class="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-lg">👥</span>
+            <input type="url" name="facebook" placeholder="https://www.facebook.com/MarvisSrl/" class="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-lg">💼</span>
+            <input type="url" name="linkedin" placeholder="https://www.linkedin.com/company/marvis/" class="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+          </div>
+        </div>
+        <div class="mt-3 choice-card">
+          <div><input type="checkbox" name="noSocial" id="noSocial" value="Rimuovi icone social — non abbiamo profili aziendali"><label for="noSocial"><span class="box"></span>Non abbiamo profili social aziendali → rimuovere le icone</label></div>
+        </div>
+      </div>
+
+      <!-- Q31 orari -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">31. Orari di lavoro</label>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-gray-500 mb-1">Apertura</label>
+            <input type="time" name="openTime" value="08:00" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-500 mb-1">Chiusura</label>
+            <input type="time" name="closeTime" value="18:00" class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+          </div>
+        </div>
+        <div class="mt-3">
+          <label class="block text-xs text-gray-500 mb-2">Giorni lavorativi:</label>
+          <div class="flex flex-wrap gap-2 choice-card">
+            <div><input type="checkbox" name="days" id="dLun" value="Lunedì" checked><label for="dLun" class="!py-2 !px-3 text-xs"><span class="box"></span>Lun</label></div>
+            <div><input type="checkbox" name="days" id="dMar" value="Martedì" checked><label for="dMar" class="!py-2 !px-3 text-xs"><span class="box"></span>Mar</label></div>
+            <div><input type="checkbox" name="days" id="dMer" value="Mercoledì" checked><label for="dMer" class="!py-2 !px-3 text-xs"><span class="box"></span>Mer</label></div>
+            <div><input type="checkbox" name="days" id="dGio" value="Giovedì" checked><label for="dGio" class="!py-2 !px-3 text-xs"><span class="box"></span>Gio</label></div>
+            <div><input type="checkbox" name="days" id="dVen" value="Venerdì" checked><label for="dVen" class="!py-2 !px-3 text-xs"><span class="box"></span>Ven</label></div>
+            <div><input type="checkbox" name="days" id="dSab" value="Sabato"><label for="dSab" class="!py-2 !px-3 text-xs"><span class="box"></span>Sab</label></div>
+            <div><input type="checkbox" name="days" id="dDom" value="Domenica"><label for="dDom" class="!py-2 !px-3 text-xs"><span class="box"></span>Dom</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEZIONE 8 ============ -->
+<div class="section" id="s8">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">8</div>
+      <h2 class="text-xl font-semibold text-gray-800">Prospettiva E-commerce</h2>
+    </div>
+    <p class="text-sm text-gray-500 mb-6 ml-11">Queste informazioni ci aiutano a progettare la struttura attuale in modo che la transizione all'e-commerce sia fluida.</p>
+    <div class="space-y-6">
+
+      <!-- Q33 pagamento -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">32. Metodi di pagamento online (futuro)</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="checkbox" name="q33" id="q33a" value="Carta di credito/debito (Stripe)"><label for="q33a"><span class="box"></span>💳 Carta di credito/debito (Stripe)</label></div>
+          <div><input type="checkbox" name="q33" id="q33b" value="Bonifico bancario"><label for="q33b"><span class="box"></span>🏦 Bonifico bancario</label></div>
+          <div><input type="checkbox" name="q33" id="q33c" value="PayPal"><label for="q33c"><span class="box"></span>🅿️ PayPal</label></div>
+          <div><input type="checkbox" name="q33" id="q33d" value="Da decidere"><label for="q33d"><span class="box"></span>Da decidere</label></div>
+        </div>
+      </div>
+
+      <!-- Q34 consegna -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">33. Modalità di consegna</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="checkbox" name="q34" id="q34a" value="BRT (Bartolini)"><label for="q34a"><span class="box"></span>BRT (Bartolini)</label></div>
+          <div><input type="checkbox" name="q34" id="q34b" value="GLS"><label for="q34b"><span class="box"></span>GLS</label></div>
+          <div><input type="checkbox" name="q34" id="q34c" value="SDA (Poste Italiane)"><label for="q34c"><span class="box"></span>SDA (Poste Italiane)</label></div>
+          <div><input type="checkbox" name="q34" id="q34d" value="DHL"><label for="q34d"><span class="box"></span>DHL</label></div>
+          <div><input type="checkbox" name="q34" id="q34e" value="Ritiro in sede"><label for="q34e"><span class="box"></span>Ritiro in sede</label></div>
+          <div><input type="checkbox" name="q34" id="q34f" value="Da definire"><label for="q34f"><span class="box"></span>Da definire</label></div>
+        </div>
+      </div>
+
+      <!-- Q35 gestionale -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">34. Sistema gestionale o di magazzino da integrare</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="radio" name="q35" id="q35a" value="No, non abbiamo un sistema gestionale" onchange="toggleGestionale()"><label for="q35a"><span class="dot"></span>No, non abbiamo un sistema gestionale</label></div>
+          <div><input type="radio" name="q35" id="q35b" value="Sì" onchange="toggleGestionale()"><label for="q35b"><span class="dot"></span>Sì, abbiamo un gestionale</label></div>
+          <div><input type="radio" name="q35" id="q35c" value="Da valutare" onchange="toggleGestionale()"><label for="q35c"><span class="dot"></span>Da valutare in futuro</label></div>
+        </div>
+        <div id="gestionaleField" class="hidden mt-3">
+          <input type="text" name="gestionaleNome" placeholder="Quale sistema? Es: Zucchetti, TeamSystem, SAP..." class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEZIONE 9 ============ -->
+<div class="section" id="s9">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">9</div>
+      <h2 class="text-xl font-semibold text-gray-800">Priorità di Lancio</h2>
+    </div>
+    <div class="space-y-6">
+
+      <!-- Q36 slider approccio -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-4">35. Approccio al lancio</label>
+        <div class="bg-[#f0ede4] rounded-xl p-5">
+          <input type="range" min="1" max="5" value="3" step="1" id="launchSlider" oninput="updateLaunchLabel(this.value)">
+          <div class="flex justify-between text-xs text-gray-500 mt-3">
+            <span class="text-center w-1/5">🚀<br>Lancio rapido,<br>poi miglioriamo</span>
+            <span class="text-center w-1/5"></span>
+            <span class="text-center w-1/5">⚖️<br>Equilibrio tra<br>velocità e qualità</span>
+            <span class="text-center w-1/5"></span>
+            <span class="text-center w-1/5">💎<br>Tutto completo,<br>nessuna fretta</span>
+          </div>
+          <p id="launchLabel" class="text-center text-sm font-medium text-marvis-primary mt-3">Equilibrio tra velocità e qualità</p>
+        </div>
+      </div>
+
+      <!-- Q37 pagine prioritarie -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">36. Pagine/sezioni da realizzare per prime</label>
+        <div class="space-y-2 choice-card">
+          <div><input type="checkbox" name="q37" id="q37a" value="Chi siamo"><label for="q37a"><span class="box"></span>Chi siamo</label></div>
+          <div><input type="checkbox" name="q37" id="q37b" value="Catalogo batterie avviamento"><label for="q37b"><span class="box"></span>Catalogo batterie avviamento</label></div>
+          <div><input type="checkbox" name="q37" id="q37c" value="Catalogo lampadine"><label for="q37c"><span class="box"></span>Catalogo lampadine</label></div>
+          <div><input type="checkbox" name="q37" id="q37d" value="Modulo contatti / richiesta preventivo"><label for="q37d"><span class="box"></span>Modulo contatti / richiesta preventivo</label></div>
+          <div><input type="checkbox" name="q37" id="q37e" value="Sezione download (listini, schede tecniche)"><label for="q37e"><span class="box"></span>Sezione download (listini, schede tecniche)</label></div>
+          <div><input type="checkbox" name="q37" id="q37f" value="Tutte le pagine insieme"><label for="q37f"><span class="box"></span>Tutte le pagine insieme</label></div>
+        </div>
+        <input type="text" name="q37extra" placeholder="Altre priorità..." class="mt-2 w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
+      </div>
+
+      <!-- Note finali -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Note aggiuntive o domande</label>
+        <textarea name="notes" rows="4" placeholder="Qualsiasi altra informazione utile, domanda o considerazione..." class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary focus:ring-1 focus:ring-marvis-primary resize-none"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RIEPILOGO ============ -->
+<div class="section" id="summary">
+  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h2 class="text-xl font-semibold text-gray-800">Questionario completato!</h2>
+      <p class="text-gray-500 text-sm mt-1">Ecco il riepilogo delle vostre risposte</p>
+    </div>
+    <div id="summaryContent" class="bg-[#f0ede4] rounded-xl p-5 text-sm space-y-2 font-mono text-gray-700 max-h-96 overflow-y-auto"></div>
+    <div class="flex gap-3 mt-5 no-print">
+      <button onclick="copyAnswers()" class="flex-1 bg-marvis-primary text-white px-6 py-3 rounded-xl font-medium hover:bg-marvis-secondary transition-colors flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        Copia risposte
+      </button>
+      <button onclick="window.print()" class="flex-1 border-2 border-[#00376a] text-[#00376a] px-6 py-3 rounded-xl font-medium hover:bg-[#f0ede4] transition-colors flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        Stampa / PDF
+      </button>
+    </div>
+    <p id="copyFeedback" class="text-center text-green-600 text-sm font-medium mt-3 hidden">✅ Copiato negli appunti!</p>
+  </div>
+</div>
+
+<!-- Navigation buttons -->
+<div class="flex gap-3 no-print" id="navButtons">
+  <button id="prevBtn" onclick="navigate(-1)" class="hidden px-6 py-3 border-2 border-[#00376a] text-[#00376a] rounded-xl font-medium hover:bg-[#f0ede4] transition-colors">
+    ← Indietro
+  </button>
+  <button id="nextBtn" onclick="navigate(1)" class="ml-auto bg-marvis-primary text-white px-8 py-3 rounded-xl font-semibold hover:bg-marvis-secondary transition-colors">
+    Avanti →
+  </button>
+  <button id="submitBtn" onclick="submitForm()" class="hidden ml-auto bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors">
+    ✓ Invia risposte
+  </button>
+</div>
+
+</div><!-- end max-w -->
+
+<script>
+let current = 1;
+const total = 9;
+const answers = {};
+const launchLabels = ['Lancio rapido, poi miglioriamo','Velocità prioritaria','Equilibrio tra velocità e qualità','Qualità prioritaria','Tutto completo, nessuna fretta'];
+
+function navigate(dir) {
+  const sections = document.querySelectorAll('.section');
+  sections[current - 1].classList.remove('active');
+  current += dir;
+  if (current > total) { showSummary(); return; }
+  sections[current - 1].classList.add('active', 'fade-in');
+  updateProgress();
+  updateButtons();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const pct = Math.round((current / total) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Sezione ${current} di ${total}`;
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function updateButtons() {
+  document.getElementById('prevBtn').classList.toggle('hidden', current === 1);
+  document.getElementById('nextBtn').classList.toggle('hidden', current === total);
+  document.getElementById('submitBtn').classList.toggle('hidden', current !== total);
+}
+
+function showSummary() {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('summary').classList.add('active', 'fade-in');
+  document.getElementById('navButtons').classList.add('hidden');
+  document.getElementById('progressLabel').textContent = 'Completato!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressPct').textContent = '100%';
+  buildSummary();
+}
+
+function buildSummary() {
+  const form = document.querySelector('body');
+  const radios = form.querySelectorAll('input[type=radio]:checked');
+  const checks = form.querySelectorAll('input[type=checkbox]:checked');
+  const texts = form.querySelectorAll('input[type=text], input[type=email], input[type=url], input[type=time], textarea');
+  let lines = ['═══ RISPOSTE QUESTIONARIO MARVIS S.r.l. ═══', ''];
+
+  const sections = ['Brand e Design','Pubblico Target','Catalogo','Processo Vendite','Prezzi','Legale','Dettagli Tecnici','E-commerce Futuro','Priorità'];
+  let prevSection = '';
+
+  radios.forEach(r => {
+    const label = r.closest('.section')?.querySelector('h2')?.textContent || '';
+    if (label !== prevSection) { lines.push(`\n── ${label} ──`); prevSection = label; }
+    const q = r.closest('div[class*="space-y"]')?.querySelector('label.block')?.textContent?.trim() || r.name;
+    lines.push(`${q}: ${r.value}`);
+  });
+
+  lines.push('\n── Checkboxes selezionati ──');
+  const cbGroups = {};
+  checks.forEach(c => {
+    if (!cbGroups[c.name]) cbGroups[c.name] = [];
+    cbGroups[c.name].push(c.value);
+  });
+  Object.entries(cbGroups).forEach(([k, v]) => lines.push(`${k}: ${v.join(', ')}`));
+
+  lines.push('\n── Campi testo ──');
+  texts.forEach(t => {
+    if (t.value && t.value.trim()) {
+      lines.push(`${t.name || t.placeholder || 'campo'}: ${t.value.trim()}`);
+    }
+  });
+
+  const rankItems = document.querySelectorAll('#rankList .drag-item');
+  lines.push('\nParametri ricerca (ordine priorità):');
+  rankItems.forEach((item, i) => lines.push(`  ${i+1}. ${item.dataset.val}`));
+
+  lines.push(`\nApproccio lancio: ${document.getElementById('launchLabel')?.textContent || ''}`);
+  lines.push(`SKU stimati: ${document.getElementById('skuVal')?.textContent || ''}`);
+  lines.push(`Ore routine/giorno: ${document.getElementById('hoursVal')?.textContent || ''}`);
+  lines.push(`\n═══════════════════════════════════════`);
+
+  document.getElementById('summaryContent').innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+  answers._summary = lines.join('\n');
+}
+
+function copyAnswers() {
+  const text = document.getElementById('summaryContent').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const fb = document.getElementById('copyFeedback');
+    fb.classList.remove('hidden');
+    setTimeout(() => fb.classList.add('hidden'), 3000);
+  });
+}
+
+function submitForm() { showSummary(); }
+function toggleCRM() { document.getElementById('crmField').classList.toggle('hidden', document.querySelector('input[name=q22]:checked')?.value !== 'Sì'); }
+function toggleGestionale() { document.getElementById('gestionaleField').classList.toggle('hidden', document.querySelector('input[name=q35]:checked')?.value !== 'Sì'); }
+function updateLaunchLabel(v) { document.getElementById('launchLabel').textContent = launchLabels[v-1]; }
+
+// Drag and drop per ranking
+let dragSrc = null;
+document.querySelectorAll('.drag-item').forEach(item => {
+  item.addEventListener('dragstart', e => { dragSrc = item; item.classList.add('dragging'); });
+  item.addEventListener('dragend', () => { dragSrc.classList.remove('dragging'); updateRankNumbers(); });
+  item.addEventListener('dragover', e => { e.preventDefault(); });
+  item.addEventListener('drop', e => {
+    e.preventDefault();
+    if (dragSrc !== item) {
+      const list = item.parentNode;
+      const allItems = [...list.children];
+      const srcIdx = allItems.indexOf(dragSrc);
+      const tgtIdx = allItems.indexOf(item);
+      if (srcIdx < tgtIdx) list.insertBefore(dragSrc, item.nextSibling);
+      else list.insertBefore(dragSrc, item);
+    }
+  });
+});
+
+function updateRankNumbers() {
+  document.querySelectorAll('#rankList .drag-item').forEach((item, i) => {
+    item.querySelector('.rank-num').textContent = i + 1;
+  });
+}
+
+updateButtons();
+</script>
+
+</body>
+</html>
