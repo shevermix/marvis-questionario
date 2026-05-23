@@ -88,14 +88,14 @@ tailwind.config = {
 <div class="bg-[#fffeff] border-b border-gray-200 sticky top-0 z-10 no-print">
   <div class="max-w-3xl mx-auto px-4 py-3">
     <div class="flex items-center justify-between mb-2">
-      <span class="text-sm font-medium text-gray-600" id="progressLabel">Sezione 1 di 8</span>
-      <span class="text-sm text-gray-400" id="progressPct">13%</span>
+      <span class="text-sm font-medium text-gray-600" id="progressLabel">Sezione 1 di 7</span>
+      <span class="text-sm text-gray-400" id="progressPct">14%</span>
     </div>
     <div class="w-full bg-gray-200 rounded-full h-2">
-      <div id="progressBar" class="bg-marvis-primary h-2 rounded-full transition-all duration-300" style="width:13%"></div>
+      <div id="progressBar" class="bg-marvis-primary h-2 rounded-full transition-all duration-300" style="width:14%"></div>
     </div>
     <div class="flex justify-between mt-2 text-xs text-gray-400">
-      <span>Brand</span><span>Target</span><span>Catalogo</span><span>Vendite</span><span>Prezzi</span><span>Legale</span><span>Tecnico</span><span>Priorità</span>
+      <span>Brand</span><span>Target</span><span>Catalogo</span><span>Vendite</span><span>Legale</span><span>Tecnico</span><span>Priorità</span>
     </div>
   </div>
 </div>
@@ -416,7 +416,7 @@ tailwind.config = {
   <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <div class="flex items-center gap-3 mb-2">
       <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">4</div>
-      <h2 class="text-xl font-semibold text-gray-800">Processo di Vendita</h2>
+      <h2 class="text-xl font-semibold text-gray-800">Vendite e Prezzi</h2>
     </div>
     <p class="text-sm text-gray-500 mb-6 ml-11">Capiamo come funziona oggi il vostro processo — per costruire il modulo richieste più efficace.</p>
     <div class="space-y-6">
@@ -435,7 +435,7 @@ tailwind.config = {
 
       <!-- Q19 -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">19. Email per la ricezione delle richieste dal sito</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">18. Email per la ricezione delle richieste dal sito</label>
         <div class="flex gap-2 items-center mb-2">
           <input type="email" name="q19" placeholder="info@marvis.it" value="info@marvis.it" class="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary focus:ring-1 focus:ring-marvis-primary">
         </div>
@@ -444,7 +444,7 @@ tailwind.config = {
 
       <!-- Q20 -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">20. Notifiche per le nuove richieste</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">19. Notifiche per le nuove richieste</label>
         <div class="space-y-2 choice-card">
           <div><input type="checkbox" name="q20" id="q20a" value="Email (automatica)" checked><label for="q20a"><span class="box"></span>📧 Email (automatica al ricevimento della richiesta)</label></div>
           <div><input type="checkbox" name="q20" id="q20c" value="WhatsApp"><label for="q20c"><span class="box"></span>💬 WhatsApp</label></div>
@@ -454,7 +454,7 @@ tailwind.config = {
 
       <!-- Q21 -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">21. Voci dell'oggetto nel modulo di contatto</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">20. Voci dell'oggetto nel modulo di contatto</label>
         <p class="text-sm text-gray-500 mb-3">Attualmente il sito ha 3 voci. Selezionate quelle da mantenere e aggiungete nuove se necessario.</p>
         <div class="space-y-2 choice-card">
           <div><input type="checkbox" name="q21" id="q21a" value="Richiesta telefonata" checked><label for="q21a"><span class="box"></span>Richiesta telefonata</label></div>
@@ -465,9 +465,9 @@ tailwind.config = {
         <input type="text" name="q21extra" placeholder="Altra voce da aggiungere..." class="mt-2 w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
       </div>
 
-      <!-- Q22 -->
+      <!-- Q21 CRM -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">22. Avete un CRM aziendale?</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">21. Avete un CRM aziendale?</label>
         <div class="space-y-2 choice-card">
           <div><input type="radio" name="q22" id="q22a" value="No" onchange="toggleCRM()"><label for="q22a"><span class="dot"></span>No</label></div>
           <div><input type="radio" name="q22" id="q22b" value="Sì" onchange="toggleCRM()"><label for="q22b"><span class="dot"></span>Sì</label></div>
@@ -476,29 +476,16 @@ tailwind.config = {
           <input type="text" name="crmName" placeholder="Quale sistema? Es: HubSpot, Salesforce, Zoho..." class="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-marvis-primary">
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- ============ SEZIONE 5 ============ -->
-<div class="section" id="s5">
-  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-    <div class="flex items-center gap-3 mb-6">
-      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">5</div>
-      <h2 class="text-xl font-semibold text-gray-800">Prezzi</h2>
-    </div>
-    <div class="space-y-6">
-
-      <!-- Q23 -->
+      <!-- Q22 prezzi -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">23. Visualizzazione prezzi sul sito</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">22. Visualizzazione prezzi sul sito</label>
         <div class="space-y-2 choice-card">
           <div><input type="radio" name="q23" id="q23a" value="Prezzi pubblici visibili a tutti"><label for="q23a"><span class="dot"></span>Prezzi pubblici — visibili a tutti</label></div>
           <div><input type="radio" name="q23" id="q23b" value="Solo su richiesta (form Richiesta Preventivo)"><label for="q23b"><span class="dot"></span>Solo su richiesta — form "Richiesta Preventivo"</label></div>
           <div><input type="radio" name="q23" id="q23c" value="Prezzi indicativi + contattaci per offerta"><label for="q23c"><span class="dot"></span>Prezzi indicativi + "contattaci per un'offerta"</label></div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
@@ -507,7 +494,7 @@ tailwind.config = {
 <div class="section" id="s6">
   <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <div class="flex items-center gap-3 mb-2">
-      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">6</div>
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">5</div>
       <h2 class="text-xl font-semibold text-gray-800">Legale e GDPR</h2>
     </div>
     <p class="text-sm text-gray-500 mb-6 ml-11">Obbligatorio per legge — senza questi dati non è possibile pubblicare il sito in Italia.</p>
@@ -515,7 +502,7 @@ tailwind.config = {
 
       <!-- Q26 -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">26. Dati aziendali</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">23. Dati aziendali</label>
         <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
           <p class="text-xs font-semibold text-green-700 mb-2">✅ Già estratti dal sito attuale — confermate che sono corretti:</p>
           <div class="space-y-1 choice-card">
@@ -547,7 +534,7 @@ tailwind.config = {
 
       <!-- Q27 -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">27. Privacy Policy e Cookie Policy</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">24. Privacy Policy e Cookie Policy</label>
         <div class="space-y-2 choice-card">
           <div><input type="radio" name="q27" id="q27a" value="Ho già una Privacy Policy redatta da un avvocato"><label for="q27a"><span class="dot"></span>Ho già una Privacy Policy redatta da un avvocato</label></div>
           <div><input type="radio" name="q27" id="q27b" value="Non ce l'ho — includi Iubenda nel preventivo (~€27/anno)"><label for="q27b"><span class="dot"></span><span class="min-w-0 flex-1">Non ce l'ho → includi <strong>Iubenda</strong> nel preventivo <span class="text-gray-400 text-xs">(~€27/anno, conforme GDPR)</span></span></label></div>
@@ -561,14 +548,14 @@ tailwind.config = {
 <div class="section" id="s7">
   <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <div class="flex items-center gap-3 mb-6">
-      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">7</div>
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">6</div>
       <h2 class="text-xl font-semibold text-gray-800">Dettagli Tecnici</h2>
     </div>
     <div class="space-y-6">
 
       <!-- Q28 -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">28. Accesso al pannello DNS del dominio marvis.it</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">25. Accesso al pannello DNS del dominio marvis.it</label>
         <div class="space-y-2 choice-card">
           <div><input type="radio" name="q28" id="q28a" value="Sì, ho le credenziali del registrar"><label for="q28a"><span class="dot"></span>Sì, ho le credenziali del registrar</label></div>
           <div><input type="radio" name="q28" id="q28b" value="No, devo richiederle"><label for="q28b"><span class="dot"></span>No, devo richiederle</label></div>
@@ -578,7 +565,7 @@ tailwind.config = {
 
       <!-- Q30 social -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">30. Profili social aziendali</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">26. Profili social aziendali</label>
         <p class="text-sm text-gray-500 mb-3">Sul sito attuale le icone social puntano alle homepage generali. Indicate i vostri profili reali, oppure li rimuoviamo.</p>
         <div class="space-y-2">
           <div class="flex items-center gap-3">
@@ -601,7 +588,7 @@ tailwind.config = {
 
       <!-- Q31 orari -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">31. Orari di lavoro</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">27. Orari di lavoro</label>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs text-gray-500 mb-1">Apertura</label>
@@ -628,7 +615,7 @@ tailwind.config = {
 
       <!-- Q32 gestionale -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">32. Sistema gestionale o di magazzino da integrare</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">28. Sistema gestionale o di magazzino da integrare</label>
         <div class="space-y-2 choice-card">
           <div><input type="radio" name="q35" id="q35a" value="No, non abbiamo un sistema gestionale" onchange="toggleGestionale()"><label for="q35a"><span class="dot"></span>No, non abbiamo un sistema gestionale</label></div>
           <div><input type="radio" name="q35" id="q35b" value="Sì" onchange="toggleGestionale()"><label for="q35b"><span class="dot"></span>Sì, abbiamo un gestionale</label></div>
@@ -642,18 +629,19 @@ tailwind.config = {
   </div>
 </div>
 
-<!-- ============ SEZIONE 9 ============ -->
+<!-- ============ SEZIONE 7 ============ -->
 <div class="section" id="s9">
   <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-    <div class="flex items-center gap-3 mb-6">
-      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">8</div>
+    <div class="flex items-center gap-3 mb-2">
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">7</div>
       <h2 class="text-xl font-semibold text-gray-800">Priorità di Lancio</h2>
     </div>
+    <p class="text-sm text-gray-500 mb-6 ml-11">Il sito può essere consegnato in più fasi — indicate cosa è prioritario per il lancio iniziale.</p>
     <div class="space-y-6">
 
       <!-- Q33 pagine prioritarie -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">36. Pagine/sezioni da realizzare per prime</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">29. Pagine/sezioni da realizzare per prime</label>
         <div class="space-y-2 choice-card">
           <div><input type="checkbox" name="q37" id="q37a" value="Chi siamo"><label for="q37a"><span class="box"></span>Chi siamo</label></div>
           <div><input type="checkbox" name="q37" id="q37b" value="Catalogo batterie avviamento"><label for="q37b"><span class="box"></span>Catalogo batterie avviamento</label></div>
@@ -730,7 +718,7 @@ tailwind.config = {
 
 <script>
 let current = 1;
-const total = 8;
+const total = 7;
 const answers = {};
 
 function navigate(dir) {
@@ -779,7 +767,7 @@ function buildSummary() {
   const texts = form.querySelectorAll('input[type=text], input[type=email], input[type=url], input[type=time], textarea');
   let lines = ['═══ RISPOSTE QUESTIONARIO MARVIS S.r.l. ═══', ''];
 
-  const sections = ['Brand e Design','Pubblico Target','Catalogo','Processo Vendite','Prezzi','Legale','Dettagli Tecnici','Priorità'];
+  const sections = ['Brand e Design','Pubblico Target','Catalogo','Vendite e Prezzi','Legale','Dettagli Tecnici','Priorità'];
   let prevSection = '';
 
   radios.forEach(r => {
