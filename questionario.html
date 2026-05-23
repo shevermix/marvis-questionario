@@ -102,8 +102,8 @@ tailwind.config = {
 
 <div class="max-w-3xl mx-auto px-4 py-8">
 
-<!-- INFO BLOCK -->
-<div class="bg-[#fffeff] rounded-2xl border border-[#00376a]/20 p-6 mb-6 no-print">
+<!-- INFO BLOCK (parte di s1, visibile solo sulla prima pagina) -->
+<div class="bg-[#fffeff] rounded-2xl border border-[#00376a]/20 p-6 mb-6 no-print" id="infoBlock">
   <div class="flex gap-4">
     <div class="w-10 h-10 bg-marvis-primary rounded-xl flex items-center justify-center flex-shrink-0">
       <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -738,6 +738,7 @@ function navigate(dir) {
   current += dir;
   if (current > total) { showSummary(); return; }
   sections[current - 1].classList.add('active', 'fade-in');
+  document.getElementById('infoBlock').classList.toggle('hidden', current !== 1);
   updateProgress();
   updateButtons();
   window.scrollTo({ top: 0, behavior: 'smooth' });
