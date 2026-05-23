@@ -124,7 +124,7 @@ tailwind.config = {
       <div>
         <label class="block text-sm font-semibold text-gray-700 mb-3">2. Schema colori del sito</label>
         <div class="space-y-2 choice-card">
-          <div><input type="radio" name="q2" id="q2a" value="Mantieni schema attuale (blu/beige/bianco)"><label for="q2a"><span class="dot"></span>Mantieni lo schema attuale <span class="ml-2 flex gap-1 items-center"><span class="inline-block w-4 h-4 rounded-full bg-[#00376a]"></span><span class="inline-block w-4 h-4 rounded-full bg-[#f0ede4] border border-gray-300"></span><span class="inline-block w-4 h-4 rounded-full bg-[#fffeff] border border-gray-300"></span></span></label></div>
+          <div><input type="radio" name="q2" id="q2a" value="Mantieni schema attuale (blu/beige/bianco)"><label for="q2a"><span class="dot"></span><span class="flex-1 min-w-0 flex flex-wrap items-center gap-2">Mantieni lo schema attuale<span class="inline-flex gap-1 items-center flex-shrink-0"><span class="inline-block w-4 h-4 rounded-full bg-[#00376a]"></span><span class="inline-block w-4 h-4 rounded-full bg-[#f0ede4] border border-gray-300"></span><span class="inline-block w-4 h-4 rounded-full bg-[#fffeff] border border-gray-300"></span></span></span></label></div>
           <div><input type="radio" name="q2" id="q2b" value="Nuova palette colori"><label for="q2b"><span class="dot"></span>Aperto a una nuova palette</label></div>
           <div><input type="radio" name="q2" id="q2c" value="Nessuna preferenza"><label for="q2c"><span class="dot"></span>Nessuna preferenza, decidete voi</label></div>
         </div>
@@ -734,8 +734,8 @@ tailwind.config = {
         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
       </div>
       <div>
-        <p class="font-semibold text-green-800">Risposte inviate allo sviluppatore!</p>
-        <p class="text-sm text-green-600 mt-0.5">Le analizzeremo e vi contatteremo a breve.</p>
+        <p class="font-semibold text-green-800">Grazie per aver compilato il questionario.</p>
+        <p class="text-sm text-green-600 mt-0.5">Analizzerò le informazioni ricevute e vi contatterò a breve per definire i prossimi passi.</p>
       </div>
     </div>
 
@@ -938,6 +938,61 @@ function updateRankNumbers() {
     item.querySelector('.rank-num').textContent = i + 1;
   });
 }
+
+// Touch drag-and-drop per dispositivi mobili
+(function() {
+  const list = document.getElementById('rankList');
+  let src = null, clone = null, offsetY = 0;
+
+  list.addEventListener('touchstart', function(e) {
+    const item = e.target.closest('.drag-item');
+    if (!item) return;
+    src = item;
+    const rect = item.getBoundingClientRect();
+    offsetY = e.touches[0].clientY - rect.top;
+    clone = item.cloneNode(true);
+    Object.assign(clone.style, {
+      position: 'fixed', zIndex: '9999',
+      width: rect.width + 'px', left: rect.left + 'px', top: rect.top + 'px',
+      opacity: '0.9', pointerEvents: 'none', margin: '0', transition: 'none',
+      boxShadow: '0 8px 24px rgba(0,55,106,0.25)', transform: 'scale(1.03)'
+    });
+    document.body.appendChild(clone);
+    item.classList.add('dragging');
+  }, { passive: true });
+
+  list.addEventListener('touchmove', function(e) {
+    if (!src || !clone) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    clone.style.top = (touch.clientY - offsetY) + 'px';
+
+    clone.style.display = 'none';
+    const below = document.elementFromPoint(touch.clientX, touch.clientY);
+    clone.style.display = '';
+    list.querySelectorAll('.drag-item').forEach(i => i.classList.remove('drag-over'));
+    const target = below?.closest('#rankList .drag-item');
+    if (target && target !== src) target.classList.add('drag-over');
+  }, { passive: false });
+
+  list.addEventListener('touchend', function(e) {
+    if (!src) return;
+    clone?.remove(); clone = null;
+    src.classList.remove('dragging');
+    const touch = e.changedTouches[0];
+    const below = document.elementFromPoint(touch.clientX, touch.clientY);
+    const target = below?.closest('#rankList .drag-item');
+    if (target && target !== src) {
+      const items = [...list.children];
+      const si = items.indexOf(src), ti = items.indexOf(target);
+      if (si < ti) list.insertBefore(src, target.nextSibling);
+      else list.insertBefore(src, target);
+    }
+    list.querySelectorAll('.drag-item').forEach(i => i.classList.remove('drag-over'));
+    updateRankNumbers();
+    src = null;
+  });
+})();
 
 updateButtons();
 </script>
