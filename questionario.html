@@ -88,14 +88,14 @@ tailwind.config = {
 <div class="bg-[#fffeff] border-b border-gray-200 sticky top-0 z-10 no-print">
   <div class="max-w-3xl mx-auto px-4 py-3">
     <div class="flex items-center justify-between mb-2">
-      <span class="text-sm font-medium text-gray-600" id="progressLabel">Sezione 1 di 9</span>
-      <span class="text-sm text-gray-400" id="progressPct">11%</span>
+      <span class="text-sm font-medium text-gray-600" id="progressLabel">Sezione 1 di 8</span>
+      <span class="text-sm text-gray-400" id="progressPct">13%</span>
     </div>
     <div class="w-full bg-gray-200 rounded-full h-2">
-      <div id="progressBar" class="bg-marvis-primary h-2 rounded-full transition-all duration-300" style="width:11%"></div>
+      <div id="progressBar" class="bg-marvis-primary h-2 rounded-full transition-all duration-300" style="width:13%"></div>
     </div>
     <div class="flex justify-between mt-2 text-xs text-gray-400">
-      <span>Brand</span><span>Target</span><span>Catalogo</span><span>Vendite</span><span>Prezzi</span><span>Legale</span><span>Tecnico</span><span>Futuro</span><span>Priorità</span>
+      <span>Brand</span><span>Target</span><span>Catalogo</span><span>Vendite</span><span>Prezzi</span><span>Legale</span><span>Tecnico</span><span>Priorità</span>
     </div>
   </div>
 </div>
@@ -390,20 +390,6 @@ tailwind.config = {
         </div>
       </div>
 
-      <!-- Q18 slider -->
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">18. Ore al giorno che i vostri manager dedicano a rispondere su disponibilità e prezzi</label>
-        <div class="bg-[#f0ede4] rounded-xl p-5">
-          <div class="text-center mb-3">
-            <span class="text-3xl font-bold text-marvis-primary" id="hoursVal">2</span>
-            <span class="text-gray-500 ml-1">ore/giorno</span>
-          </div>
-          <input type="range" min="0" max="8" value="2" step="0.5" oninput="document.getElementById('hoursVal').textContent=this.value; answers.hoursRoutine=this.value">
-          <div class="flex justify-between text-xs text-gray-400 mt-1"><span>0h</span><span>2h</span><span>4h</span><span>6h</span><span>8h+</span></div>
-        </div>
-        <p class="text-xs text-gray-400 mt-2">Questo ci aiuta a dimensionare l'automazione giusta per il vostro sito.</p>
-      </div>
-
       <!-- Q19 -->
       <div>
         <label class="block text-sm font-semibold text-gray-700 mb-2">19. Email per la ricezione delle richieste dal sito</label>
@@ -417,9 +403,7 @@ tailwind.config = {
       <div>
         <label class="block text-sm font-semibold text-gray-700 mb-3">20. Notifiche per le nuove richieste</label>
         <div class="space-y-2 choice-card">
-          <div><input type="checkbox" name="q20" id="q20a" value="Email (automatica)"><label for="q20a"><span class="box"></span>📧 Email (automatica)</label></div>
-          <div><input type="checkbox" name="q20" id="q20b" value="SMS"><label for="q20b"><span class="box"></span>📱 SMS</label></div>
-          <div><input type="checkbox" name="q20" id="q20c" value="WhatsApp"><label for="q20c"><span class="box"></span>💬 WhatsApp</label></div>
+          <div><input type="checkbox" name="q20" id="q20a" value="Email (automatica)" checked><label for="q20a"><span class="box"></span>📧 Email (automatica al ricevimento della richiesta)</label></div>
           <div><input type="checkbox" name="q20" id="q20d" value="Non necessario"><label for="q20d"><span class="box"></span>Non necessario</label></div>
         </div>
       </div>
@@ -471,26 +455,6 @@ tailwind.config = {
         </div>
       </div>
 
-      <!-- Q24 -->
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">24. Struttura del listino prezzi</label>
-        <div class="space-y-2 choice-card">
-          <div><input type="radio" name="q24" id="q24a" value="Listino unico per tutti i clienti"><label for="q24a"><span class="dot"></span>Listino unico per tutti i clienti</label></div>
-          <div><input type="radio" name="q24" id="q24b" value="Prezzi personalizzati per cliente e volume d'acquisto"><label for="q24b"><span class="dot"></span>Prezzi personalizzati per cliente e volume d'acquisto</label></div>
-        </div>
-      </div>
-
-      <!-- Q25 -->
-      <div class="bg-[#f0ede4] rounded-xl p-5 border border-[#00376a]/20">
-        <label class="block text-sm font-semibold text-gray-800 mb-1">25. Portale B2B con area riservata (prospettiva futura)</label>
-        <p class="text-sm text-gray-600 mb-4">I vostri clienti fissi potrebbero avere un'area personale dove vedono i propri sconti, le disponibilità di magazzino e fanno ordini senza chiamare.</p>
-        <div class="space-y-2 choice-card">
-          <div><input type="radio" name="q25" id="q25a" value="Sì, molto interessante"><label for="q25a"><span class="dot"></span>Sì, molto interessante</label></div>
-          <div><input type="radio" name="q25" id="q25b" value="Forse in futuro"><label for="q25b"><span class="dot"></span>Forse in futuro</label></div>
-          <div><input type="radio" name="q25" id="q25c" value="Non necessario"><label for="q25c"><span class="dot"></span>Non necessario</label></div>
-        </div>
-        <p class="text-xs text-gray-500 mt-3">💡 Adesso realizziamo il sito-vetrina per generare richieste. Il portale B2B sarebbe il secondo step.</p>
-      </div>
     </div>
   </div>
 </div>
@@ -617,47 +581,10 @@ tailwind.config = {
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- ============ SEZIONE 8 ============ -->
-<div class="section" id="s8">
-  <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-    <div class="flex items-center gap-3 mb-2">
-      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">8</div>
-      <h2 class="text-xl font-semibold text-gray-800">Prospettiva E-commerce</h2>
-    </div>
-    <p class="text-sm text-gray-500 mb-6 ml-11">Queste informazioni ci aiutano a progettare la struttura attuale in modo che la transizione all'e-commerce sia fluida.</p>
-    <div class="space-y-6">
-
-      <!-- Q33 pagamento -->
+      <!-- Q32 gestionale -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">32. Metodi di pagamento online (futuro)</label>
-        <div class="space-y-2 choice-card">
-          <div><input type="checkbox" name="q33" id="q33a" value="Carta di credito/debito (Stripe)"><label for="q33a"><span class="box"></span>💳 Carta di credito/debito (Stripe)</label></div>
-          <div><input type="checkbox" name="q33" id="q33b" value="Bonifico bancario"><label for="q33b"><span class="box"></span>🏦 Bonifico bancario</label></div>
-          <div><input type="checkbox" name="q33" id="q33c" value="PayPal"><label for="q33c"><span class="box"></span>🅿️ PayPal</label></div>
-          <div><input type="checkbox" name="q33" id="q33d" value="Da decidere"><label for="q33d"><span class="box"></span>Da decidere</label></div>
-        </div>
-      </div>
-
-      <!-- Q34 consegna -->
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">33. Modalità di consegna</label>
-        <div class="space-y-2 choice-card">
-          <div><input type="checkbox" name="q34" id="q34a" value="BRT (Bartolini)"><label for="q34a"><span class="box"></span>BRT (Bartolini)</label></div>
-          <div><input type="checkbox" name="q34" id="q34b" value="GLS"><label for="q34b"><span class="box"></span>GLS</label></div>
-          <div><input type="checkbox" name="q34" id="q34c" value="SDA (Poste Italiane)"><label for="q34c"><span class="box"></span>SDA (Poste Italiane)</label></div>
-          <div><input type="checkbox" name="q34" id="q34d" value="DHL"><label for="q34d"><span class="box"></span>DHL</label></div>
-          <div><input type="checkbox" name="q34" id="q34e" value="Ritiro in sede"><label for="q34e"><span class="box"></span>Ritiro in sede</label></div>
-          <div><input type="checkbox" name="q34" id="q34f" value="Da definire"><label for="q34f"><span class="box"></span>Da definire</label></div>
-        </div>
-      </div>
-
-      <!-- Q35 gestionale -->
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-3">34. Sistema gestionale o di magazzino da integrare</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">32. Sistema gestionale o di magazzino da integrare</label>
         <div class="space-y-2 choice-card">
           <div><input type="radio" name="q35" id="q35a" value="No, non abbiamo un sistema gestionale" onchange="toggleGestionale()"><label for="q35a"><span class="dot"></span>No, non abbiamo un sistema gestionale</label></div>
           <div><input type="radio" name="q35" id="q35b" value="Sì" onchange="toggleGestionale()"><label for="q35b"><span class="dot"></span>Sì, abbiamo un gestionale</label></div>
@@ -675,28 +602,12 @@ tailwind.config = {
 <div class="section" id="s9">
   <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <div class="flex items-center gap-3 mb-6">
-      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">9</div>
+      <div class="w-8 h-8 bg-marvis-primary text-white rounded-full flex items-center justify-center font-bold text-sm">8</div>
       <h2 class="text-xl font-semibold text-gray-800">Priorità di Lancio</h2>
     </div>
     <div class="space-y-6">
 
-      <!-- Q36 slider approccio -->
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-4">35. Approccio al lancio</label>
-        <div class="bg-[#f0ede4] rounded-xl p-5">
-          <input type="range" min="1" max="5" value="3" step="1" id="launchSlider" oninput="updateLaunchLabel(this.value)">
-          <div class="flex justify-between text-xs text-gray-500 mt-3">
-            <span class="text-center w-1/5">🚀<br>Lancio rapido,<br>poi miglioriamo</span>
-            <span class="text-center w-1/5"></span>
-            <span class="text-center w-1/5">⚖️<br>Equilibrio tra<br>velocità e qualità</span>
-            <span class="text-center w-1/5"></span>
-            <span class="text-center w-1/5">💎<br>Tutto completo,<br>nessuna fretta</span>
-          </div>
-          <p id="launchLabel" class="text-center text-sm font-medium text-marvis-primary mt-3">Equilibrio tra velocità e qualità</p>
-        </div>
-      </div>
-
-      <!-- Q37 pagine prioritarie -->
+      <!-- Q33 pagine prioritarie -->
       <div>
         <label class="block text-sm font-semibold text-gray-700 mb-3">36. Pagine/sezioni da realizzare per prime</label>
         <div class="space-y-2 choice-card">
@@ -775,9 +686,8 @@ tailwind.config = {
 
 <script>
 let current = 1;
-const total = 9;
+const total = 8;
 const answers = {};
-const launchLabels = ['Lancio rapido, poi miglioriamo','Velocità prioritaria','Equilibrio tra velocità e qualità','Qualità prioritaria','Tutto completo, nessuna fretta'];
 
 function navigate(dir) {
   const sections = document.querySelectorAll('.section');
@@ -824,7 +734,7 @@ function buildSummary() {
   const texts = form.querySelectorAll('input[type=text], input[type=email], input[type=url], input[type=time], textarea');
   let lines = ['═══ RISPOSTE QUESTIONARIO MARVIS S.r.l. ═══', ''];
 
-  const sections = ['Brand e Design','Pubblico Target','Catalogo','Processo Vendite','Prezzi','Legale','Dettagli Tecnici','E-commerce Futuro','Priorità'];
+  const sections = ['Brand e Design','Pubblico Target','Catalogo','Processo Vendite','Prezzi','Legale','Dettagli Tecnici','Priorità'];
   let prevSection = '';
 
   radios.forEach(r => {
@@ -853,9 +763,7 @@ function buildSummary() {
   lines.push('\nParametri ricerca (ordine priorità):');
   rankItems.forEach((item, i) => lines.push(`  ${i+1}. ${item.dataset.val}`));
 
-  lines.push(`\nApproccio lancio: ${document.getElementById('launchLabel')?.textContent || ''}`);
   lines.push(`SKU stimati: ${document.getElementById('skuVal')?.textContent || ''}`);
-  lines.push(`Ore routine/giorno: ${document.getElementById('hoursVal')?.textContent || ''}`);
   lines.push(`\n═══════════════════════════════════════`);
 
   document.getElementById('summaryContent').innerHTML = lines.map(l => `<div>${l}</div>`).join('');
@@ -900,7 +808,6 @@ function submitForm() {
 }
 function toggleCRM() { document.getElementById('crmField').classList.toggle('hidden', document.querySelector('input[name=q22]:checked')?.value !== 'Sì'); }
 function toggleGestionale() { document.getElementById('gestionaleField').classList.toggle('hidden', document.querySelector('input[name=q35]:checked')?.value !== 'Sì'); }
-function updateLaunchLabel(v) { document.getElementById('launchLabel').textContent = launchLabels[v-1]; }
 
 // Drag and drop per ranking
 let dragSrc = null;
