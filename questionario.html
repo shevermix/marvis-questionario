@@ -40,10 +40,30 @@ tailwind.config = {
   .box { width: 16px; height: 16px; border: 2px solid #d1d5db; border-radius: 4px; flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; }
   .choice-card input[type=checkbox]:checked + label .box { background: #00376a; border-color: #00376a; }
   .choice-card input[type=checkbox]:checked + label .box::after { content: '✓'; }
-  .drag-item { padding: 10px 14px; background: #fffeff; border: 2px solid #e5e7eb; border-radius: 8px; cursor: grab; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; transition: box-shadow 0.15s; }
-  .drag-item:hover { box-shadow: 0 4px 12px rgba(0,55,106,0.15); border-color: #00376a; }
-  .drag-item.dragging { opacity: 0.5; cursor: grabbing; }
-  .rank-num { width: 24px; height: 24px; background: #00376a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .drag-item { padding: 10px 14px; background: #fffeff; border: 2px solid #e5e7eb; border-radius: 8px; cursor: grab; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; transition: box-shadow 0.15s, border-color 0.15s, transform 0.12s, background 0.15s; }
+  .drag-item:hover { box-shadow: 0 4px 12px rgba(0,55,106,0.15); border-color: #00376a; transform: translateY(-1px); }
+  .drag-item.dragging { opacity: 0.45; cursor: grabbing; transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,55,106,0.2); }
+  .drag-item.drag-over { border-color: #00376a; border-style: dashed; background: #f0ede4; }
+  .drag-handle { color: #94a3b8; margin-left: auto; flex-shrink: 0; }
+  .drag-item:hover .drag-handle { color: #00376a; }
+  .rank-num { width: 24px; height: 24px; background: #00376a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; transition: transform 0.15s; }
+  /* Choice card micro-lift on select */
+  .choice-card input:checked + label { border-color: #00376a; background: #e4dfd3; color: #00376a; font-weight: 600; transform: scale(1.01); }
+  /* Drag nudge hint on first item */
+  @keyframes nudge { 0%,100% { transform: translateX(0); } 25% { transform: translateX(6px); } 60% { transform: translateX(-3px); } }
+  .drag-nudge { animation: nudge 0.75s ease 1s both; }
+  /* Button hover lift */
+  #nextBtn, #submitBtn { transition: all 0.15s; }
+  #nextBtn:hover, #submitBtn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,55,106,0.25); }
+  #prevBtn { transition: all 0.15s; }
+  #prevBtn:hover { transform: translateY(-1px); }
+  button:active:not(:disabled) { transform: scale(0.96) !important; }
+  /* Progress % pop */
+  @keyframes numPop { 0%,100% { transform: scale(1); } 40% { transform: scale(1.2); } }
+  .pct-pop { animation: numPop 0.25s ease; }
+  /* Success toast slide-in */
+  @keyframes toastSlide { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  #sentBanner { animation: toastSlide 0.4s ease; }
   @media print {
     .no-print { display: none !important; }
     .section { display: block !important; }
@@ -299,14 +319,17 @@ tailwind.config = {
 
       <!-- Q13 rank -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">13. Parametri di ricerca — ordinate per importanza (trascinate)</label>
-        <p class="text-sm text-gray-500 mb-3">Il primo = filtro più importante per i vostri clienti</p>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">13. Parametri di ricerca del catalogo</label>
+        <div class="flex items-center gap-2 bg-[#f0ede4] border border-[#00376a]/20 rounded-lg px-3 py-2 mb-3 text-sm text-[#00376a]">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          <span><strong>Trascinate le voci</strong> per ordinarle — in cima il filtro più usato dai vostri clienti</span>
+        </div>
         <ul id="rankList" class="space-y-2">
-          <li class="drag-item" draggable="true" data-val="Marca"><span class="rank-num">1</span>🏷️ Marca</li>
-          <li class="drag-item" draggable="true" data-val="Corrente spunto CCA/EN"><span class="rank-num">2</span>⚡ Corrente di spunto (CCA/EN)</li>
-          <li class="drag-item" draggable="true" data-val="Capacità Ah"><span class="rank-num">3</span>🔋 Capacità (Ah)</li>
-          <li class="drag-item" draggable="true" data-val="Dimensioni"><span class="rank-num">4</span>📐 Dimensioni</li>
-          <li class="drag-item" draggable="true" data-val="Polarità"><span class="rank-num">5</span>🔄 Polarità</li>
+          <li class="drag-item drag-nudge" draggable="true" data-val="Marca"><span class="rank-num">1</span>🏷️ Marca<svg class="drag-handle w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><circle cx="7" cy="5" r="1.5"/><circle cx="13" cy="5" r="1.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="10" r="1.5"/><circle cx="7" cy="15" r="1.5"/><circle cx="13" cy="15" r="1.5"/></svg></li>
+          <li class="drag-item" draggable="true" data-val="Corrente spunto CCA/EN"><span class="rank-num">2</span>⚡ Corrente di spunto (CCA/EN)<svg class="drag-handle w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><circle cx="7" cy="5" r="1.5"/><circle cx="13" cy="5" r="1.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="10" r="1.5"/><circle cx="7" cy="15" r="1.5"/><circle cx="13" cy="15" r="1.5"/></svg></li>
+          <li class="drag-item" draggable="true" data-val="Capacità Ah"><span class="rank-num">3</span>🔋 Capacità (Ah)<svg class="drag-handle w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><circle cx="7" cy="5" r="1.5"/><circle cx="13" cy="5" r="1.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="10" r="1.5"/><circle cx="7" cy="15" r="1.5"/><circle cx="13" cy="15" r="1.5"/></svg></li>
+          <li class="drag-item" draggable="true" data-val="Dimensioni"><span class="rank-num">4</span>📐 Dimensioni<svg class="drag-handle w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><circle cx="7" cy="5" r="1.5"/><circle cx="13" cy="5" r="1.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="10" r="1.5"/><circle cx="7" cy="15" r="1.5"/><circle cx="13" cy="15" r="1.5"/></svg></li>
+          <li class="drag-item" draggable="true" data-val="Polarità"><span class="rank-num">5</span>🔄 Polarità<svg class="drag-handle w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><circle cx="7" cy="5" r="1.5"/><circle cx="13" cy="5" r="1.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="10" r="1.5"/><circle cx="7" cy="15" r="1.5"/><circle cx="13" cy="15" r="1.5"/></svg></li>
         </ul>
       </div>
 
@@ -705,6 +728,17 @@ tailwind.config = {
 <!-- ============ RIEPILOGO ============ -->
 <div class="section" id="summary">
   <div class="bg-[#fffeff] rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <!-- Banner invio (mostrato solo su success) -->
+    <div id="sentBanner" class="hidden mb-5 bg-green-50 border border-green-200 rounded-xl px-5 py-4 flex items-center gap-4">
+      <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div>
+        <p class="font-semibold text-green-800">Risposte inviate allo sviluppatore!</p>
+        <p class="text-sm text-green-600 mt-0.5">Le analizzeremo e vi contatteremo a breve.</p>
+      </div>
+    </div>
+
     <div class="text-center mb-6">
       <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
         <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -766,7 +800,11 @@ function updateProgress() {
   const pct = Math.round((current / total) * 100);
   document.getElementById('progressBar').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = `Sezione ${current} di ${total}`;
-  document.getElementById('progressPct').textContent = pct + '%';
+  const pctEl = document.getElementById('progressPct');
+  pctEl.textContent = pct + '%';
+  pctEl.classList.remove('pct-pop');
+  void pctEl.offsetWidth; // reflow per retriggare animazione
+  pctEl.classList.add('pct-pop');
 }
 
 function updateButtons() {
@@ -856,6 +894,9 @@ function submitForm() {
     brief_content: answers._summary || '(nessuna risposta registrata)'
   }).then(function() {
     showSummary();
+    const banner = document.getElementById('sentBanner');
+    banner.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, function(error) {
     console.error('EmailJS error:', error);
     btn.disabled = false;
@@ -870,11 +911,17 @@ function updateLaunchLabel(v) { document.getElementById('launchLabel').textConte
 // Drag and drop per ranking
 let dragSrc = null;
 document.querySelectorAll('.drag-item').forEach(item => {
-  item.addEventListener('dragstart', e => { dragSrc = item; item.classList.add('dragging'); });
-  item.addEventListener('dragend', () => { dragSrc.classList.remove('dragging'); updateRankNumbers(); });
-  item.addEventListener('dragover', e => { e.preventDefault(); });
+  item.addEventListener('dragstart', e => { dragSrc = item; setTimeout(() => item.classList.add('dragging'), 0); });
+  item.addEventListener('dragend', () => {
+    dragSrc.classList.remove('dragging');
+    document.querySelectorAll('.drag-item').forEach(i => i.classList.remove('drag-over'));
+    updateRankNumbers();
+  });
+  item.addEventListener('dragover', e => { e.preventDefault(); item.classList.add('drag-over'); });
+  item.addEventListener('dragleave', () => { item.classList.remove('drag-over'); });
   item.addEventListener('drop', e => {
     e.preventDefault();
+    item.classList.remove('drag-over');
     if (dragSrc !== item) {
       const list = item.parentNode;
       const allItems = [...list.children];
