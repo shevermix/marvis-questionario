@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('NQ5ZS2hHDV2jnFblF');</script>
 <script>
 tailwind.config = {
   theme: {
@@ -733,9 +735,12 @@ tailwind.config = {
   <button id="nextBtn" onclick="navigate(1)" class="ml-auto bg-marvis-primary text-white px-8 py-3 rounded-xl font-semibold hover:bg-marvis-secondary transition-colors">
     Avanti →
   </button>
-  <button id="submitBtn" onclick="submitForm()" class="hidden ml-auto bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors">
-    ✓ Invia risposte
-  </button>
+  <div id="submitWrap" class="hidden ml-auto flex flex-col items-end gap-2">
+    <button id="submitBtn" onclick="submitForm()" class="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+      ✓ Invia risposte
+    </button>
+    <p id="submitError" class="hidden text-sm text-red-600">⚠ Errore nell'invio. Controlla la connessione e riprova.</p>
+  </div>
 </div>
 
 </div><!-- end max-w -->
@@ -767,7 +772,7 @@ function updateProgress() {
 function updateButtons() {
   document.getElementById('prevBtn').classList.toggle('hidden', current === 1);
   document.getElementById('nextBtn').classList.toggle('hidden', current === total);
-  document.getElementById('submitBtn').classList.toggle('hidden', current !== total);
+  document.getElementById('submitWrap').classList.toggle('hidden', current !== total);
 }
 
 function showSummary() {
@@ -834,7 +839,30 @@ function copyAnswers() {
   });
 }
 
-function submitForm() { showSummary(); }
+function submitForm() {
+  const btn = document.getElementById('submitBtn');
+  const errMsg = document.getElementById('submitError');
+
+  // Loading state
+  btn.disabled = true;
+  btn.textContent = '⏳ Invio in corso…';
+  errMsg.classList.add('hidden');
+
+  // Collect answers
+  buildSummary();
+
+  emailjs.send('service_565qb2e', 'template_n5giqyq', {
+    from_name: 'Marvis S.r.l. — Questionario',
+    brief_content: answers._summary || '(nessuna risposta registrata)'
+  }).then(function() {
+    showSummary();
+  }, function(error) {
+    console.error('EmailJS error:', error);
+    btn.disabled = false;
+    btn.textContent = '✓ Invia risposte';
+    errMsg.classList.remove('hidden');
+  });
+}
 function toggleCRM() { document.getElementById('crmField').classList.toggle('hidden', document.querySelector('input[name=q22]:checked')?.value !== 'Sì'); }
 function toggleGestionale() { document.getElementById('gestionaleField').classList.toggle('hidden', document.querySelector('input[name=q35]:checked')?.value !== 'Sì'); }
 function updateLaunchLabel(v) { document.getElementById('launchLabel').textContent = launchLabels[v-1]; }
